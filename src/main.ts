@@ -1,69 +1,45 @@
 import './style.css'
+import type { Todo } from './types.ts'
+import { addTodo, removeTodo } from './todos.ts'
 
-interface Todo {
-    id: number;
-    text: string;
-    completed: boolean;
-}
-
-let todos: Todo[] = [];
+let todos: Todo[] = []
 
 const todoInput = document.getElementById('todo-input') as HTMLInputElement
 const todoForm = document.querySelector('.todo-form') as HTMLFormElement
-const todoList = document.getElementById('todo-list') as HTMLInputElement
+const todoList = document.getElementById('todo-list') as HTMLUListElement
 
-
-
-const addTodo = (text:string):void => {
-    const newTodo: Todo = {
-        id: Date.now(), //gguid
-        text: text,
-        completed: false
-    }
-    todos.push(newTodo)
-    console.log(`Todo added: ${todos}`)
-
-    renderTodos();
-}
-
-const renderTodos = ():void => {
-    //cleares the current list - test later
-    todoList.innerHTML = '';
+const renderTodos = (): void => {
+    todoList.innerHTML = ''
 
     todos.forEach(todo => {
         const li = document.createElement('li')
         li.className = 'todo-item'
-        li.innerHTML = `
-        <span>${todo.text}</span>
-        <button>Remove</button>
-        `
 
-        addRemoveButtonListener(li, todo.id);
+        const span = document.createElement('span')
+        span.textContent = todo.text
+
+        const removeButton = document.createElement('button')
+        removeButton.textContent = 'Remove'
+        removeButton.addEventListener('click', () => {
+            todos = removeTodo(todos, todo.id)
+            renderTodos()
+        })
+
+        li.append(span, removeButton)
         todoList.appendChild(li)
     })
 }
 
-renderTodos();
-
 todoForm.addEventListener('submit', (event: Event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     const text = todoInput.value.trim()
 
-    if(text !== '') {
-        addTodo(text)
+    if (text !== '') {
+        todos = addTodo(todos, text)
         todoInput.value = ''
-
+        renderTodos()
     }
 })
 
-
-const addRemoveButtonListener = (li:HTMLLIElement, id:number):void => {
-    const removeButton = li.querySelector('button');
-    removeButton?.addEventListener('click', () => removeTodo(id))
-}
-
-const removeTodo = (id:number):void => {
-    todos = todos.filter(todo => todo.id !== id)
-    renderTodos()
-}
+renderTodos()
