@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { addTodo, removeTodo, isValidTodoText } from '../../src/todos.ts'
+import { addTodo, removeTodo, isValidTodoText, toggleTodo } from '../../src/todos.ts'
 import type { Todo } from '../../src/types.ts'
 
 const sample: Todo[] = [
@@ -46,5 +46,26 @@ describe('isValidTodoText', () => {
 
     it('rejects a text with only spaces', () => {
         expect(isValidTodoText('   ')).toBe(false)
+    })
+})
+
+describe('toggleTodo', () => {
+    it('marks an active todo as completed', () => {
+        const result = toggleTodo(sample, 1)
+
+        expect(result[0].completed).toBe(true)
+    })
+
+    it('marks a completed todo as active again', () => {
+        const result = toggleTodo(sample, 2)
+
+        expect(result[1].completed).toBe(false)
+    })
+
+    it('does not change the other todos or the original list', () => {
+        const result = toggleTodo(sample, 1)
+
+        expect(result[1]).toEqual(sample[1])
+        expect(sample[0].completed).toBe(false)
     })
 })
