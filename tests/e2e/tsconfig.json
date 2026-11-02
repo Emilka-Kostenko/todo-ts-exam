@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "lib": ["es2020", "dom"],
+    "types": [],
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "include": ["./*.ts"]
+}
