@@ -1,0 +1,37 @@
+name: Release candidate
+
+# Continuous delivery: every push to a release branch is tested and packaged,
+# so the build that goes online later is already tested and ready.
+on:
+  push:
+    branches: ['release/**']
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  package:
+    name: Package release build
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-build
+          path: dist/
