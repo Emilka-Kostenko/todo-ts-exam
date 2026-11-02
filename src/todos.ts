@@ -15,3 +15,8 @@ export const addTodo = (todos: Todo[], text: string): Todo[] => {
 export const removeTodo = (todos: Todo[], id: number): Todo[] => {
     return todos.filter(todo => todo.id !== id)
 }
+
+// A todo text is valid when it is not empty after removing spaces at the start and end
+export const isValidTodoText = (text: string): boolean => {
+    return text.trim() !== ''
+}
