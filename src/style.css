@@ -93,3 +93,13 @@ h1 {
   margin-top: 5px;
   display: none;
 }
+.todo-item span {
+  flex: 1;
+  margin: 0 10px;
+}
+
+/* Completed todos: line through the text and a lighter color */
+.todo-item span.completed {
+  text-decoration: line-through;
+  color: #888;
+}

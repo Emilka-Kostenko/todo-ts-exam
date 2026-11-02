@@ -1,6 +1,6 @@
 import './style.css'
 import type { Todo } from './types.ts'
-import { addTodo, removeTodo, isValidTodoText } from './todos.ts'
+import { addTodo, removeTodo, isValidTodoText, toggleTodo } from './todos.ts'
 
 let todos: Todo[] = []
 
@@ -28,8 +28,19 @@ const renderTodos = (): void => {
         const li = document.createElement('li')
         li.className = 'todo-item'
 
+        // Checkbox that shows and changes the completed status
+        const checkbox = document.createElement('input')
+        checkbox.type = 'checkbox'
+        checkbox.checked = todo.completed
+        checkbox.addEventListener('change', () => {
+            todos = toggleTodo(todos, todo.id)
+            renderTodos()
+        })
+
         const span = document.createElement('span')
         span.textContent = todo.text
+        // The "completed" class draws a line through the text (see style.css)
+        span.classList.toggle('completed', todo.completed)
 
         const removeButton = document.createElement('button')
         removeButton.textContent = 'Remove'
@@ -38,7 +49,7 @@ const renderTodos = (): void => {
             renderTodos()
         })
 
-        li.append(span, removeButton)
+        li.append(checkbox, span, removeButton)
         todoList.appendChild(li)
     })
 }

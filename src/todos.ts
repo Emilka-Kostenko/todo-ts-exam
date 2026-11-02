@@ -20,3 +20,14 @@ export const removeTodo = (todos: Todo[], id: number): Todo[] => {
 export const isValidTodoText = (text: string): boolean => {
     return text.trim() !== ''
 }
+
+// Flip the completed status of the todo with the given id (true -> false, false -> true).
+// The other todos stay the same.
+export const toggleTodo = (todos: Todo[], id: number): Todo[] => {
+    return todos.map(todo => {
+        if (todo.id === id) {
+            return { ...todo, completed: !todo.completed }
+        }
+        return todo
+    })
+}
