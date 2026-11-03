@@ -1,8 +1,10 @@
 import './style.css'
-import type { Todo } from './types.ts'
-import { addTodo, removeTodo, isValidTodoText, toggleTodo } from './todos.ts'
+import type { Todo, Filter } from './types.ts'
+import { addTodo, removeTodo, isValidTodoText, toggleTodo, filterTodos } from './todos.ts'
 
 let todos: Todo[] = []
+// The filter that is selected right now
+let currentFilter: Filter = 'all'
 
 const todoInput = document.getElementById('todo-input') as HTMLInputElement
 const todoForm = document.querySelector('.todo-form') as HTMLFormElement
@@ -21,10 +23,18 @@ const hideError = (): void => {
     errorMessage.style.display = 'none'
 }
 
+const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-button')
+
 const renderTodos = (): void => {
     todoList.innerHTML = ''
 
-    todos.forEach(todo => {
+    // Highlight the button of the selected filter
+    filterButtons.forEach(button => {
+        button.classList.toggle('selected', button.dataset.filter === currentFilter)
+    })
+
+    // Only show the todos that match the selected filter
+    filterTodos(todos, currentFilter).forEach(todo => {
         const li = document.createElement('li')
         li.className = 'todo-item'
 
@@ -70,6 +80,14 @@ todoForm.addEventListener('submit', (event: Event) => {
     todos = addTodo(todos, text)
     todoInput.value = ''
     renderTodos()
+})
+
+// Clicking a filter button saves the new filter and updates the list
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        currentFilter = button.dataset.filter as Filter
+        renderTodos()
+    })
 })
 
 renderTodos()

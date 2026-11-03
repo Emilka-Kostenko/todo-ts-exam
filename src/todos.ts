@@ -1,4 +1,4 @@
-import type { Todo } from './types.ts'
+import type { Todo, Filter } from './types.ts'
 
 // Pure functions: they get the current list and return a new list.
 // No DOM in here, so they are easy to test.
@@ -30,4 +30,16 @@ export const toggleTodo = (todos: Todo[], id: number): Todo[] => {
         }
         return todo
     })
+}
+
+// Return only the todos that match the filter:
+// all = every todo, active = not completed, completed = completed
+export const filterTodos = (todos: Todo[], filter: Filter): Todo[] => {
+    if (filter === 'active') {
+        return todos.filter(todo => !todo.completed)
+    }
+    if (filter === 'completed') {
+        return todos.filter(todo => todo.completed)
+    }
+    return todos
 }
