@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { addTodo, removeTodo, isValidTodoText, toggleTodo } from '../../src/todos.ts'
+import { addTodo, removeTodo, isValidTodoText, toggleTodo, filterTodos } from '../../src/todos.ts'
 import type { Todo } from '../../src/types.ts'
 
 const sample: Todo[] = [
@@ -67,5 +67,19 @@ describe('toggleTodo', () => {
 
         expect(result[1]).toEqual(sample[1])
         expect(sample[0].completed).toBe(false)
+    })
+})
+
+describe('filterTodos', () => {
+    it('all returns every todo', () => {
+        expect(filterTodos(sample, 'all')).toEqual(sample)
+    })
+
+    it('active returns only todos that are not completed', () => {
+        expect(filterTodos(sample, 'active')).toEqual([sample[0]])
+    })
+
+    it('completed returns only completed todos', () => {
+        expect(filterTodos(sample, 'completed')).toEqual([sample[1]])
     })
 })
