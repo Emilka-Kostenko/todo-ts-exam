@@ -45,6 +45,8 @@ const renderTodos = (): void => {
         const checkbox = document.createElement('input')
         checkbox.type = 'checkbox'
         checkbox.checked = todo.completed
+        // Give the checkbox a name for screen readers
+        checkbox.setAttribute('aria-label', todo.text)
         checkbox.addEventListener('change', () => {
             todos = toggleTodo(todos, todo.id)
             renderTodos()
