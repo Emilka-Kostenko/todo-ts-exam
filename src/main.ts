@@ -1,6 +1,6 @@
 import './style.css'
 import type { Todo, Filter } from './types.ts'
-import { addTodo, removeTodo, isValidTodoText, toggleTodo, filterTodos } from './todos.ts'
+import { addTodo, removeTodo, isValidTodoText, toggleTodo, filterTodos, clearCompleted } from './todos.ts'
 
 let todos: Todo[] = []
 // The filter that is selected right now
@@ -24,6 +24,7 @@ const hideError = (): void => {
 }
 
 const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-button')
+const clearCompletedButton = document.getElementById('clear-completed') as HTMLButtonElement
 
 const renderTodos = (): void => {
     todoList.innerHTML = ''
@@ -79,6 +80,12 @@ todoForm.addEventListener('submit', (event: Event) => {
     hideError()
     todos = addTodo(todos, text)
     todoInput.value = ''
+    renderTodos()
+})
+
+// Clicking "Clear completed" removes all completed todos at once
+clearCompletedButton.addEventListener('click', () => {
+    todos = clearCompleted(todos)
     renderTodos()
 })
 

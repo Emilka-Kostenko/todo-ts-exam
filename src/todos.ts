@@ -43,3 +43,8 @@ export const filterTodos = (todos: Todo[], filter: Filter): Todo[] => {
     }
     return todos
 }
+
+// Remove every completed todo and keep the active ones
+export const clearCompleted = (todos: Todo[]): Todo[] => {
+    return todos.filter(todo => !todo.completed)
+}
