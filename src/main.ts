@@ -32,6 +32,8 @@ const renderTodos = (): void => {
     // Highlight the button of the selected filter
     filterButtons.forEach(button => {
         button.classList.toggle('selected', button.dataset.filter === currentFilter)
+        // Tell screen readers which filter button is pressed
+        button.setAttribute('aria-pressed', String(button.dataset.filter === currentFilter))
     })
 
     // Only show the todos that match the selected filter
