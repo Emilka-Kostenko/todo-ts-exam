@@ -48,3 +48,13 @@ export const filterTodos = (todos: Todo[], filter: Filter): Todo[] => {
 export const clearCompleted = (todos: Todo[]): Todo[] => {
     return todos.filter(todo => !todo.completed)
 }
+
+// Percentage of completed todos, from 0 to 100 (rounded).
+// An empty list is 0%, so we never divide by zero.
+export const getProgress = (todos: Todo[]): number => {
+    if (todos.length === 0) {
+        return 0
+    }
+    const completedCount = todos.filter(todo => todo.completed).length
+    return Math.round((completedCount / todos.length) * 100)
+}

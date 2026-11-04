@@ -133,3 +133,24 @@ h1 {
   border-radius: 3px;
   cursor: pointer;
 }
+
+.progress {
+  margin-top: 10px;
+}
+.progress-bar {
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+#progress-fill {
+  height: 100%;
+  width: 0;
+  background: #28a745;
+  transition: width 0.3s;
+}
+#progress-text {
+  margin: 5px 0 0;
+  font-size: 0.9em;
+  text-align: center;
+}
