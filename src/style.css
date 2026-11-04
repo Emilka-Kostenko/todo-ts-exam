@@ -101,7 +101,7 @@ h1 {
 /* Completed todos: line through the text and a lighter color */
 .todo-item span.completed {
   text-decoration: line-through;
-  color: #888;
+  color: #707070;
 }
 
 .filters {
