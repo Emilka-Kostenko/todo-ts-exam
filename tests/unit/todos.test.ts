@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { addTodo, removeTodo, isValidTodoText, toggleTodo, filterTodos, clearCompleted } from '../../src/todos.ts'
+import { addTodo, removeTodo, isValidTodoText, toggleTodo, filterTodos, clearCompleted, getProgress } from '../../src/todos.ts'
 import type { Todo } from '../../src/types.ts'
 
 const sample: Todo[] = [
@@ -99,5 +99,29 @@ describe('clearCompleted', () => {
         clearCompleted(sample)
 
         expect(sample).toHaveLength(2)
+    })
+})
+
+describe('getProgress', () => {
+    it('is 0 for an empty list', () => {
+        expect(getProgress([])).toBe(0)
+    })
+
+    it('is 50 when one of two todos is completed', () => {
+        expect(getProgress(sample)).toBe(50)
+    })
+
+    it('is 100 when every todo is completed', () => {
+        expect(getProgress([{ id: 1, text: 'Buy milk', completed: true }])).toBe(100)
+    })
+
+    it('rounds to a whole number', () => {
+        const oneOfThree: Todo[] = [
+            { id: 1, text: 'A', completed: true },
+            { id: 2, text: 'B', completed: false },
+            { id: 3, text: 'C', completed: false },
+        ]
+
+        expect(getProgress(oneOfThree)).toBe(33)
     })
 })
