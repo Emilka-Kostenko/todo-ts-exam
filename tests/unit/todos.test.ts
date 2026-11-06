@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { addTodo, removeTodo, isValidTodoText, toggleTodo, filterTodos, clearCompleted, getProgress } from '../../src/todos.ts'
+import { addTodo, removeTodo, isValidTodoText, toggleTodo, filterTodos, clearCompleted, getProgress, searchTodos } from '../../src/todos.ts'
 import type { Todo } from '../../src/types.ts'
 
 const sample: Todo[] = [
@@ -123,5 +123,24 @@ describe('getProgress', () => {
         ]
 
         expect(getProgress(oneOfThree)).toBe(33)
+    })
+})
+
+describe('searchTodos', () => {
+    it('returns the todos that contain the search text', () => {
+        expect(searchTodos(sample, 'milk')).toEqual([sample[0]])
+    })
+
+    it('ignores upper and lower case', () => {
+        expect(searchTodos(sample, 'DOG')).toEqual([sample[1]])
+    })
+
+    it('returns every todo for an empty search', () => {
+        expect(searchTodos(sample, '')).toEqual(sample)
+        expect(searchTodos(sample, '   ')).toEqual(sample)
+    })
+
+    it('returns an empty list when nothing matches', () => {
+        expect(searchTodos(sample, 'xyz')).toEqual([])
     })
 })
