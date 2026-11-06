@@ -1,6 +1,6 @@
 import './style.css'
 import type { Todo, Filter } from './types.ts'
-import { addTodo, removeTodo, isValidTodoText, toggleTodo, filterTodos, clearCompleted } from './todos.ts'
+import { addTodo, removeTodo, isValidTodoText, toggleTodo, filterTodos, clearCompleted, getProgress } from './todos.ts'
 
 let todos: Todo[] = []
 // The filter that is selected right now
@@ -25,9 +25,18 @@ const hideError = (): void => {
 
 const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-button')
 const clearCompletedButton = document.getElementById('clear-completed') as HTMLButtonElement
+const progressBar = document.querySelector('.progress-bar') as HTMLDivElement
+const progressFill = document.getElementById('progress-fill') as HTMLDivElement
+const progressText = document.getElementById('progress-text') as HTMLParagraphElement
 
 const renderTodos = (): void => {
     todoList.innerHTML = ''
+
+    // Update the progress bar. It always counts all todos, not only the filtered ones.
+    const percent = getProgress(todos)
+    progressFill.style.width = `${percent}%`
+    progressText.textContent = `${percent}% completed`
+    progressBar.setAttribute('aria-valuenow', String(percent))
 
     // Highlight the button of the selected filter
     filterButtons.forEach(button => {
