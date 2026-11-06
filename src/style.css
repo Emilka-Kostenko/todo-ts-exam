@@ -154,3 +154,12 @@ h1 {
   font-size: 0.9em;
   text-align: center;
 }
+
+#search-input {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
