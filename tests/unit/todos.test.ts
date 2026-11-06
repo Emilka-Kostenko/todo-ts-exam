@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { addTodo, removeTodo } from '../../src/todos.ts'
+import { addTodo, removeTodo, isValidTodoText } from '../../src/todos.ts'
 import type { Todo } from '../../src/types.ts'
 
 const sample: Todo[] = [
@@ -32,5 +32,19 @@ describe('removeTodo', () => {
 
     it('keeps the list the same when the id does not exist', () => {
         expect(removeTodo(sample, 99)).toEqual(sample)
+    })
+})
+
+describe('isValidTodoText', () => {
+    it('accepts a normal text', () => {
+        expect(isValidTodoText('Buy milk')).toBe(true)
+    })
+
+    it('rejects an empty text', () => {
+        expect(isValidTodoText('')).toBe(false)
+    })
+
+    it('rejects a text with only spaces', () => {
+        expect(isValidTodoText('   ')).toBe(false)
     })
 })
