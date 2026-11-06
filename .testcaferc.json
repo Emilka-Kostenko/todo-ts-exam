@@ -1,0 +1,15 @@
+{
+  "src": "tests/e2e/**/*.test.ts",
+  "browsers": "chrome:headless",
+  "screenshots": {
+    "path": "screenshots",
+    "takeOnFails": true
+  },
+  "appCommand": "npm run preview -- --port 4173 --strictPort",
+  "appInitDelay": 3000,
+  "compilerOptions": {
+    "typescript": {
+      "configPath": "tests/e2e/tsconfig.json"
+    }
+  }
+}

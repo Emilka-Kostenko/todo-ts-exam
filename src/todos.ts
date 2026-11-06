@@ -1,0 +1,68 @@
+import type { Todo, Filter } from './types.ts'
+
+// Pure functions: they get the current list and return a new list.
+// No DOM in here, so they are easy to test.
+
+export const addTodo = (todos: Todo[], text: string): Todo[] => {
+    const newTodo: Todo = {
+        id: Date.now(),
+        text: text,
+        completed: false
+    }
+    return [...todos, newTodo]
+}
+
+export const removeTodo = (todos: Todo[], id: number): Todo[] => {
+    return todos.filter(todo => todo.id !== id)
+}
+
+// A todo text is valid when it is not empty after removing spaces at the start and end
+export const isValidTodoText = (text: string): boolean => {
+    return text.trim() !== ''
+}
+
+// Flip the completed status of the todo with the given id (true -> false, false -> true).
+// The other todos stay the same.
+export const toggleTodo = (todos: Todo[], id: number): Todo[] => {
+    return todos.map(todo => {
+        if (todo.id === id) {
+            return { ...todo, completed: !todo.completed }
+        }
+        return todo
+    })
+}
+
+// Return only the todos that match the filter:
+// all = every todo, active = not completed, completed = completed
+export const filterTodos = (todos: Todo[], filter: Filter): Todo[] => {
+    if (filter === 'active') {
+        return todos.filter(todo => !todo.completed)
+    }
+    if (filter === 'completed') {
+        return todos.filter(todo => todo.completed)
+    }
+    return todos
+}
+
+// Remove every completed todo and keep the active ones
+export const clearCompleted = (todos: Todo[]): Todo[] => {
+    return todos.filter(todo => !todo.completed)
+}
+
+// Percentage of completed todos, from 0 to 100 (rounded).
+// An empty list is 0%, so we never divide by zero.
+export const getProgress = (todos: Todo[]): number => {
+    if (todos.length === 0) {
+        return 0
+    }
+    const completedCount = todos.filter(todo => todo.completed).length
+    return Math.round((completedCount / todos.length) * 100)
+}
+
+// Return the todos whose text contains the search text.
+// The search ignores upper and lower case and spaces at the start and end.
+// An empty search returns every todo.
+export const searchTodos = (todos: Todo[], query: string): Todo[] => {
+    const search = query.trim().toLowerCase()
+    return todos.filter(todo => todo.text.toLowerCase().includes(search))
+}
