@@ -58,3 +58,11 @@ export const getProgress = (todos: Todo[]): number => {
     const completedCount = todos.filter(todo => todo.completed).length
     return Math.round((completedCount / todos.length) * 100)
 }
+
+// Return the todos whose text contains the search text.
+// The search ignores upper and lower case and spaces at the start and end.
+// An empty search returns every todo.
+export const searchTodos = (todos: Todo[], query: string): Todo[] => {
+    const search = query.trim().toLowerCase()
+    return todos.filter(todo => todo.text.toLowerCase().includes(search))
+}

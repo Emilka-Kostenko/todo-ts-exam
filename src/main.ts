@@ -1,10 +1,12 @@
 import './style.css'
 import type { Todo, Filter } from './types.ts'
-import { addTodo, removeTodo, isValidTodoText, toggleTodo, filterTodos, clearCompleted, getProgress } from './todos.ts'
+import { addTodo, removeTodo, isValidTodoText, toggleTodo, filterTodos, clearCompleted, getProgress, searchTodos } from './todos.ts'
 
 let todos: Todo[] = []
 // The filter that is selected right now
 let currentFilter: Filter = 'all'
+// The text in the search field
+let searchQuery = ''
 
 const todoInput = document.getElementById('todo-input') as HTMLInputElement
 const todoForm = document.querySelector('.todo-form') as HTMLFormElement
@@ -23,6 +25,7 @@ const hideError = (): void => {
     errorMessage.style.display = 'none'
 }
 
+const searchInput = document.getElementById('search-input') as HTMLInputElement
 const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-button')
 const clearCompletedButton = document.getElementById('clear-completed') as HTMLButtonElement
 const progressBar = document.querySelector('.progress-bar') as HTMLDivElement
@@ -45,8 +48,9 @@ const renderTodos = (): void => {
         button.setAttribute('aria-pressed', String(button.dataset.filter === currentFilter))
     })
 
-    // Only show the todos that match the selected filter
-    filterTodos(todos, currentFilter).forEach(todo => {
+    // First search by text, then apply the selected filter, and show what is left
+    const visibleTodos = filterTodos(searchTodos(todos, searchQuery), currentFilter)
+    visibleTodos.forEach(todo => {
         const li = document.createElement('li')
         li.className = 'todo-item'
 
@@ -93,6 +97,12 @@ todoForm.addEventListener('submit', (event: Event) => {
     hideError()
     todos = addTodo(todos, text)
     todoInput.value = ''
+    renderTodos()
+})
+
+// Typing in the search field saves the text and updates the list on every key
+searchInput.addEventListener('input', () => {
+    searchQuery = searchInput.value
     renderTodos()
 })
 
