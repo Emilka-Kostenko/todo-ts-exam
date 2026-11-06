@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { addTodo, removeTodo, isValidTodoText, toggleTodo, filterTodos } from '../../src/todos.ts'
+import { addTodo, removeTodo, isValidTodoText, toggleTodo, filterTodos, clearCompleted } from '../../src/todos.ts'
 import type { Todo } from '../../src/types.ts'
 
 const sample: Todo[] = [
@@ -81,5 +81,23 @@ describe('filterTodos', () => {
 
     it('completed returns only completed todos', () => {
         expect(filterTodos(sample, 'completed')).toEqual([sample[1]])
+    })
+})
+
+describe('clearCompleted', () => {
+    it('removes the completed todos and keeps the active ones', () => {
+        expect(clearCompleted(sample)).toEqual([sample[0]])
+    })
+
+    it('keeps the list the same when nothing is completed', () => {
+        const active: Todo[] = [{ id: 1, text: 'Buy milk', completed: false }]
+
+        expect(clearCompleted(active)).toEqual(active)
+    })
+
+    it('does not change the original list', () => {
+        clearCompleted(sample)
+
+        expect(sample).toHaveLength(2)
     })
 })
